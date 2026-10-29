@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://lamsiyah.github.io/salimalamsiyah.github.io/sitemap.xml
