@@ -1,3 +1,4 @@
+document.documentElement.classList.add('js');
 const menu = document.querySelector('.menu-toggle');
 const nav = document.querySelector('#navigation');
 menu?.addEventListener('click', () => {
@@ -32,4 +33,17 @@ if (search && category) {
   }
   search.value = new URLSearchParams(location.search).get('q') || '';
   search.addEventListener('input', filter); category.addEventListener('change', filter); filter();
+}
+
+const sectionLinks = [...document.querySelectorAll('#navigation a')].filter(a => a.getAttribute('href').startsWith('#'));
+if (sectionLinks.length && 'IntersectionObserver' in window) {
+  const setActive = id => sectionLinks.forEach(a => {
+    if (a.hash === '#' + id) a.setAttribute('aria-current','location');
+    else a.removeAttribute('aria-current');
+  });
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => { if (entry.isIntersecting) setActive(entry.target.id); });
+  }, {rootMargin:'-5% 0px -75% 0px',threshold:0});
+  document.querySelectorAll('main > section[id]').forEach(section => observer.observe(section));
+  setActive(location.hash.slice(1) || 'about');
 }
